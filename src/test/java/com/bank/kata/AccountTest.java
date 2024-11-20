@@ -61,5 +61,19 @@ public class AccountTest {
         );
         assertEquals(Constants.INSUFFICIENT_BALANCE_MESSAGE, exception.getMessage());
     }
+
+    @Test
+    public void should_record_transactions_in_transaction_history() {
+        Account account = new Account();
+        account.deposit(300);
+        account.withdraw(100);
+        String expectedStatement = """
+            Date       | Amount | Balance
+            2024-11-20 | +300   | 300
+            2024-11-20 | -100   | 200
+            """;
+        assertEquals(expectedStatement.trim(), account.getStatement());
+    }
+
 }
 
