@@ -10,4 +10,13 @@ public class AccountTest {
         account.deposit(100);
         assertEquals(100, account.getBalance());
     }
+
+
+    @Test
+    public void should_subtract_withdrawal_from_balance() {
+        Account account = new Account();
+        account.deposit(100);
+        account.withdraw(50);
+        assertEquals(50, account.getBalance());
+    }
 }
