@@ -2,6 +2,7 @@ package com.bank.kata;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class AccountTest {
     @Test
@@ -19,4 +20,46 @@ public class AccountTest {
         account.withdraw(50);
         assertEquals(50, account.getBalance());
     }
+
+    @Test
+    public void should_throw_exception_when_deposit_amount_is_negative() {
+        Account account = new Account();
+        InvalidAmountException exception = assertThrows(
+                InvalidAmountException.class,
+                () -> account.deposit(-100)
+        );
+        assertEquals(Constants.INVALID_DEPOSIT_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    public void should_throw_exception_when_withdrawal_amount_is_zero() {
+        Account account = new Account();
+        InvalidAmountException exception = assertThrows(
+                InvalidAmountException.class,
+                () -> account.withdraw(0)
+        );
+        assertEquals(Constants.INVALID_WITHDRAWAL_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    public void should_throw_exception_when_withdrawal_amount_is_negative() {
+        Account account = new Account();
+        InvalidAmountException exception = assertThrows(
+                InvalidAmountException.class,
+                () -> account.withdraw(-50)
+        );
+        assertEquals(Constants.INVALID_WITHDRAWAL_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    public void should_throw_exception_when_withdrawal_exceeds_balance() {
+        Account account = new Account();
+        account.deposit(100);
+        InsufficientBalanceException exception = assertThrows(
+                InsufficientBalanceException.class,
+                () -> account.withdraw(200)
+        );
+        assertEquals(Constants.INSUFFICIENT_BALANCE_MESSAGE, exception.getMessage());
+    }
 }
+
