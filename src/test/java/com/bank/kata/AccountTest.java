@@ -1,10 +1,21 @@
 package com.bank.kata;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.time.LocalDate;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 public class AccountTest {
+
+    private LocalDate today;
+
+    @Before
+    public void setup() {
+        today = LocalDate.now();
+    }
     @Test
     public void should_add_deposit_to_balance() {
         Account account = new Account();
@@ -67,11 +78,12 @@ public class AccountTest {
         Account account = new Account();
         account.deposit(300);
         account.withdraw(100);
-        String expectedStatement = """
+        String expectedStatement = String.format("""
             Date       | Amount | Balance
-            2024-11-20 | +300   | 300
-            2024-11-20 | -100   | 200
-            """;
+            %s | +300   | 300
+            %s | -100   | 200
+            """, today, today);
+
         assertEquals(expectedStatement.trim(), account.getStatement());
     }
 
